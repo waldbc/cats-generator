@@ -1,0 +1,33 @@
+{
+  "name": "example",
+  "description": "example",
+  "image": "ipfs://baseURI/1.png",
+  "edition": 1,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Pastel_Pink"
+    },
+    {
+      "trait_type": "Body",
+      "value": "Orange"
+    },
+    {
+      "trait_type": "Bottom_Accessory",
+      "value": "None"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Small"
+    },
+    {
+      "trait_type": "Mouth",
+      "value": "Teeth"
+    },
+    {
+      "trait_type": "Top_Accessory",
+      "value": "Axe"
+    }
+  ],
+  "compiler": "zc engine"
+}
