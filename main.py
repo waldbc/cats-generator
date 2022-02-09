@@ -1,7 +1,9 @@
+import json
 import os
 import random
-import json
+
 from PIL import Image
+
 from config import layers
 
 
