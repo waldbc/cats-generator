@@ -90,14 +90,14 @@ def create_image(token_name: str, edition: int, final_layers: list):
     final image. Saves it in the images folder."""
 
     # Sets the background layer
-    bg = Image.open(final_layers[0])
+    background_layer = Image.open(final_layers[0])
 
     # Adds each layer to the background
     for filepath in final_layers[1:]:
         img = Image.open(filepath)
-        bg.paste(img, img)
+        background_layer.paste(img, img)
 
-    bg.save(f'build/images/{token_name} #{edition}.png')
+    background_layer.save(f'build/images/{token_name} #{edition}.png')
 
 
 def main():
