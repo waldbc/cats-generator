@@ -1,12 +1,9 @@
+""" Initialises layers for use in the program.
+    Make sure to type the exact directory name into the folder value.
 
-
-# Initialises layers for use in the program.
-
-# Make sure to type the exact directory name into the folder value.
-
-# Rarity weights are based on the order of the images in each folder, typically 
-# alphabetical. 
-
+    Rarity weights are based on the order of the images in each folder, typically
+    alphabetical.
+"""
 layers = [
     {
         'id': 1,
