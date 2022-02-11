@@ -15,10 +15,12 @@ def make_dirs():
     """
     print('Creating build directories')
     build_dirs = ['build', 'build/images', 'build/json']
+
     for _dir in build_dirs:
         if not os.path.isdir(_dir):
             print(f'Directory does not yet exist; creating {_dir}')
             os.mkdir(_dir)
+
     print('Build directories created')
 
 def join_layers(assets: str) -> list:
@@ -77,7 +79,7 @@ def create_metadata(description: str, token_name: str, edition: int, final_layer
 
         metadata['attributes'].append(intemediary_dict)
 
-    with open(f'build/json/{edition}.json', 'w') as outfile:
+    with open(f'build/json/{edition}.json', 'w', encoding='utf-8') as outfile:
         json.dump(metadata, outfile, indent=2)
 
 
