@@ -65,8 +65,7 @@ def create_metadata(description: str, token_name: str, edition: int, final_layer
             #{'trait_type': '', 'value': ''},
             #{'trait_type': '', 'value': ''},
             #{'trait_type': '', 'value': ''}
-        ],
-        'compiler': 'zc engine'
+        ]
     }
 
     for layer in final_layers:
@@ -95,7 +94,7 @@ def create_image(token_name: str, edition: int, final_layers: list):
         img = Image.open(filepath)
         background_layer.paste(img, img)
 
-    background_layer.save(f'build/images/{token_name} #{edition}.png')
+    background_layer.save(f'build/images/{token_name}-{edition}.png')
 
 
 def main():
