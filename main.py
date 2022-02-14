@@ -13,17 +13,15 @@ def make_dirs():
     """Creates the directories to store final images and later on, their corresponding json data. If
     the folders already exist, print to confirm and continue with the program.
     """
-    # TODO: Decompose this logic from the try/except/else statement; unnecessary - hides info
-    try:
-        # TODO: Add conditional check for each dir, then create
-        os.mkdir('build')
-        os.mkdir('build/images')
-        os.mkdir('build/json')
-    except:
-        print('Build folders already exist. No more will be created')
-    else:
-        print('Build folders successfully created.')
+    print('Creating build directories')
+    build_dirs = ['build', 'build/images', 'build/json']
 
+    for _dir in build_dirs:
+        if not os.path.isdir(_dir):
+            print(f'Directory does not yet exist; creating {_dir}')
+            os.mkdir(_dir)
+
+    print('Build directories created')
 
 def join_layers(assets: str) -> list:
     """Loops through each layer folder and chooses
@@ -67,8 +65,7 @@ def create_metadata(description: str, token_name: str, edition: int, final_layer
             #{'trait_type': '', 'value': ''},
             #{'trait_type': '', 'value': ''},
             #{'trait_type': '', 'value': ''}
-        ],
-        'compiler': 'zc engine'
+        ]
     }
 
     for layer in final_layers:
@@ -81,7 +78,7 @@ def create_metadata(description: str, token_name: str, edition: int, final_layer
 
         metadata['attributes'].append(intemediary_dict)
 
-    with open(f'build/json/{edition}.json', 'w') as outfile:
+    with open(f'build/json/{edition}.json', 'w', encoding='utf-8') as outfile:
         json.dump(metadata, outfile, indent=2)
 
 
@@ -97,7 +94,7 @@ def create_image(token_name: str, edition: int, final_layers: list):
         img = Image.open(filepath)
         background_layer.paste(img, img)
 
-    background_layer.save(f'build/images/{token_name} #{edition}.png')
+    background_layer.save(f'build/images/{token_name}-{edition}.png')
 
 
 def main():
