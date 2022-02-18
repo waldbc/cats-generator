@@ -23,6 +23,7 @@ def make_dirs():
 
     print('Build directories created')
 
+# TODO: Edit/rewrite loop for non-required layers
 def join_layers(assets: str) -> list:
     """Loops through each layer folder and chooses
         a layer from each folder based on the given
