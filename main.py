@@ -23,6 +23,14 @@ def make_dirs():
 
     print('Build directories created')
 
+
+def is_mandatory(layer: dict) -> bool:
+    """Helper function returning whether or not the
+        passed layer is mandatory or optional.
+    """
+    return layer['required']
+
+
 # TODO: Edit/rewrite loop for non-required layers
 def join_layers(assets: str) -> list:
     """Loops through each layer folder and chooses
@@ -41,12 +49,17 @@ def join_layers(assets: str) -> list:
         # Sorts images into alphebetical order for use with rarities
         sorted_layers = sorted(os.listdir(layer_path))
 
+        # If the layer is optional, add None value based on final rarity weight
+        if not is_mandatory(layer):
+            sorted_layers.append('None')
+
         # Choose an image from the given subdirectory based on rarities
         img = random.choices(sorted_layers, weights=(layer['rarities']))
 
         # Store each chosen image path to a list
         final_layers.append(os.path.join(layer_path, img[0]))
 
+    # Convert to hashable data type so duplicates can be checked for later on
     final_layers = tuple(final_layers)
     return final_layers
 
@@ -71,12 +84,18 @@ def create_metadata(description: str, token_name: str, edition: int, final_layer
 
     for layer in final_layers:
 
-        intemediary_dict = {}
-        split_data = layer.split('/')
+        intemediary_dict = dict()
+        data = layer.split('/')
 
-        intemediary_dict['trait_type'] = split_data[-2]
-        intemediary_dict['value'] = split_data[-1].replace('.png', '')
+        # Add the category as a trait
+        intemediary_dict['trait_type'] = data[-2]
 
+        if data[-1] != 'None':
+            # Remove png extension and add the trait value
+            intemediary_dict['value'] = data[-1].replace('.png', '')
+        else:
+            intemediary_dict['value'] = data[-1]
+    
         metadata['attributes'].append(intemediary_dict)
 
     with open(f'build/json/{edition}.json', 'w', encoding='utf-8') as outfile:
@@ -92,8 +111,11 @@ def create_image(token_name: str, edition: int, final_layers: list):
 
     # Adds each layer to the background
     for filepath in final_layers[1:]:
-        img = Image.open(filepath)
-        background_layer.paste(img, img)
+
+        # If the filepath isn't None
+        if filepath.endswith('None') == False:
+            img = Image.open(filepath)
+            background_layer.paste(img, img)
 
     background_layer.save(f'build/images/{token_name}-{edition}.png')
 
