@@ -24,14 +24,6 @@ def make_dirs():
     print('Build directories created')
 
 
-def is_mandatory(layer: dict) -> bool:
-    """Helper function returning whether or not the
-        passed layer is mandatory or optional.
-    """
-    return layer['required']
-
-
-# TODO: Edit/rewrite loop for non-required layers
 def join_layers(assets: str) -> list:
     """Loops through each layer folder and chooses
         a layer from each folder based on the given
@@ -50,7 +42,7 @@ def join_layers(assets: str) -> list:
         sorted_layers = sorted(os.listdir(layer_path))
 
         # If the layer is optional, add None value based on final rarity weight
-        if not is_mandatory(layer):
+        if layer['required'] == False:
             sorted_layers.append('None')
 
         # Choose an image from the given subdirectory based on rarities
