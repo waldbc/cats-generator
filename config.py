@@ -4,8 +4,6 @@
     Rarity weights are based on the order of the images in each folder, typically
     alphabetical.
 """
-
-# TODO: Add option for non-required layers
 layers = [
     {
         'id': 1,
