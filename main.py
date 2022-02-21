@@ -76,19 +76,21 @@ def create_metadata(description: str, token_name: str, edition: int, final_layer
 
     for layer in final_layers:
 
-        intemediary_dict = dict()
+        attributes_dict = dict()
         data = layer.split('/')
 
-        # Add the category as a trait
-        intemediary_dict['trait_type'] = data[-2]
+        # Add the trait category as a key in dict
+        attributes_dict['trait_type'] = data[-2]
 
-        if data[-1] != 'None':
+        trait_value = data[-1]
+
+        if trait_value != 'None':
             # Remove png extension and add the trait value
-            intemediary_dict['value'] = data[-1].replace('.png', '')
+            attributes_dict['value'] = trait_value.replace('.png', '')
         else:
-            intemediary_dict['value'] = data[-1]
+            attributes_dict['value'] = trait_value
     
-        metadata['attributes'].append(intemediary_dict)
+        metadata['attributes'].append(attributes_dict)
 
     with open(f'build/json/{edition}.json', 'w', encoding='utf-8') as outfile:
         json.dump(metadata, outfile, indent=2)
