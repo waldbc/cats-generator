@@ -24,7 +24,7 @@ def make_dirs():
     print('Build directories created')
 
 
-def join_layers(assets: str) -> list:
+def join_layers(assets: str) -> tuple():
     """Loops through each layer folder and chooses
         a layer from each folder based on the given
         rarity weights. It then appends all the paths
