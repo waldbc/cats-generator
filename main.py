@@ -42,7 +42,7 @@ def join_layers(assets: str) -> tuple():
         sorted_layers = sorted(os.listdir(layer_path))
 
         # If the layer is optional, add None value based on final rarity weight
-        if layer['required'] == False:
+        if not layer['required']:
             sorted_layers.append('None')
 
         # Choose an image from the given subdirectory based on rarities
@@ -107,9 +107,9 @@ def create_image(token_name: str, edition: int, final_layers: list):
     for filepath in final_layers[1:]:
 
         # If the filepath isn't None
-        if filepath.endswith('None') == False:
+        if not filepath.endswith('None'):
             img = Image.open(filepath)
-            background_layer.paste(img, img)
+            background_layer.alpha_composite(img)
 
     background_layer.save(f'build/images/{token_name}-{edition}.png')
 
