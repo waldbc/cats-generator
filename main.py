@@ -24,7 +24,7 @@ def make_dirs():
     print('Build directories created')
 
 
-def join_layers(assets: str) -> list:
+def join_layers(assets: str) -> tuple():
     """Loops through each layer folder and chooses
         a layer from each folder based on the given
         rarity weights. It then appends all the paths
@@ -42,7 +42,7 @@ def join_layers(assets: str) -> list:
         sorted_layers = sorted(os.listdir(layer_path))
 
         # If the layer is optional, add None value based on final rarity weight
-        if layer['required'] == False:
+        if not layer['required']:
             sorted_layers.append('None')
 
         # Choose an image from the given subdirectory based on rarities
@@ -76,19 +76,21 @@ def create_metadata(description: str, token_name: str, edition: int, final_layer
 
     for layer in final_layers:
 
-        intemediary_dict = dict()
+        attributes_dict = dict()
         data = layer.split('/')
 
-        # Add the category as a trait
-        intemediary_dict['trait_type'] = data[-2]
+        # Add the trait category as a key in dict
+        attributes_dict['trait_type'] = data[-2]
 
-        if data[-1] != 'None':
+        trait_value = data[-1]
+
+        if trait_value != 'None':
             # Remove png extension and add the trait value
-            intemediary_dict['value'] = data[-1].replace('.png', '')
+            attributes_dict['value'] = trait_value.replace('.png', '')
         else:
-            intemediary_dict['value'] = data[-1]
+            attributes_dict['value'] = trait_value
     
-        metadata['attributes'].append(intemediary_dict)
+        metadata['attributes'].append(attributes_dict)
 
     with open(f'build/json/{edition}.json', 'w', encoding='utf-8') as outfile:
         json.dump(metadata, outfile, indent=2)
@@ -105,9 +107,9 @@ def create_image(token_name: str, edition: int, final_layers: list):
     for filepath in final_layers[1:]:
 
         # If the filepath isn't None
-        if filepath.endswith('None') == False:
+        if not filepath.endswith('None'):
             img = Image.open(filepath)
-            background_layer.paste(img, img)
+            background_layer.alpha_composite(img)
 
     background_layer.save(f'build/images/{token_name}-{edition}.png')
 
