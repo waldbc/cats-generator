@@ -1,28 +1,43 @@
-## Python Art Engine
+# Python Generative Art Engine
 
-### What It Does
+Python program focused on creating generative NFT collections based on layers of art. 
 
-This is a program I built with the intention of combining multiple layers of art into one final image. This kind of art generator is ideal for creating something like an NFT collection.
+## Project Goals
 
-### Features
-- Customisable rarities - Set your own rarities for each trait.
-- Complete Metadata Creation - Creates metadata for each created image, and can be updated with an IPFS URI ready for use with a smart contract.
-- No Duplicates - Each time a set of images are created, the program checks that it doesn't match any already created. This means every image is unique and ensures there are no duplicates
+Making an easy and accessible generative art program for programmers and non-programmers alike. 
+The source is written in **python** to be accessible for everybody and easy to contribute.
 
-### Configuring The Files
 
-All of the sub folders of images are placed into the assets directory. From here, head into the config file and edit the existing layers with your own directory names and desired weights, as specified in the inital comments of the config file.
+## Dependencies
+* Pillow (PIL Fork)
+* All other dependencies come built-in with Python.
 
-### Using The Program
+## How to use
 
-Upon running the main.py file, the program will prompt the user for some details about the collection, e.g. the name, description and amount desired. Once this information has been given, the program will begin.
+Drop all of your organised folders of layers into the assets folder.
 
-### Improving The Program
+In the `config.py` file, simply replace the default folder names with your folder names,
+and set required value to `True` or `False` depending on whether it is a mandatory layer or not.
 
-This program was a fun challenge to build. I decided to do this from scratch without following any other projects which helps me improve my knowledge.
+### Setting the Rarities
 
-The code itself initially had quite a lot of global variables, which I managed to pass into the functions instead to avoid this. I think the actual structure of the program could be improved a bit; I toyed with the idea of nesting the functions within main to give it enough scope - However I was unsure. I suppose with more features a class structure could also be considered.
+The values in the rarities represent how often you want each layer to occur as a percentage out of 100.
 
-I think a very beneficial feature would be to allow for easier control of non-required layers. Currently an transparent png is simply added to represent the absence of a layer, but having the program decide this for itself would be more beneficial.
+For example, if you have two backgrounds, you may set the rarities to `[80, 20]`. 
 
-Another useful feature might be an option to decide the size of the images created. Currently the program uses the dimensions of the given images, but it may be useful to be able to shrink these to reduce file size or if a higher resolution is unnecessary.
+The rarities should be in the same order as the layers are in the folder (typically alphabetical).
+
+If the layer is *not* mandatory - e.g. a hat/accessory - add an extra value into rarities to represent the None value.
+
+For example, if you have two hats, you could set the rarities as `[60, 30, 10]`. This means the first accessory will occur 60% of the time, the second 30% of the time, and *no accessory* 10% of the time.
+
+## Contributing
+
+1.  Fork it!
+2.  Create your feature branch: `git checkout -b my-new-feature`
+3.  Commit your changes: `git commit -m 'Add some feature'`
+4.  Push to the branch: `git push origin my-new-feature`
+5.  Submit a pull request
+
+## License
+MIT © [lapsha-dev](https://github.com/lapsha-dev)
