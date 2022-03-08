@@ -109,6 +109,9 @@ def create_image(token_name: str, edition: int, final_layers: list):
         # If the filepath isn't None
         if not filepath.endswith('None'):
             img = Image.open(filepath)
+
+            # TODO: work out why some collections require paste rather than alpha composite.
+            # background_layer.paste(img, img)
             background_layer.alpha_composite(img)
 
     background_layer.save(f'build/images/{token_name}-{edition}.png')
