@@ -101,14 +101,14 @@ def create_image(token_name: str, edition: int, final_layers: list):
     final image. Saves it in the images folder."""
 
     # Sets the background layer
-    background_layer = Image.open(final_layers[0])
+    background_layer = Image.open(final_layers[0]).convert("RGBA")
 
     # Adds each layer to the background
     for filepath in final_layers[1:]:
 
         # If the filepath isn't None
         if not filepath.endswith('None'):
-            img = Image.open(filepath)
+            img = Image.open(filepath).convert("RGBA")
 
             # TODO: work out why some collections require paste rather than alpha composite.
             # background_layer.paste(img, img)
