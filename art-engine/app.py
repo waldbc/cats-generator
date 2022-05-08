@@ -98,6 +98,7 @@ def create_image(config_file: object, edition: int, final_layers: tuple) -> None
     else:
         base_image = Image.open(final_layers[0]).convert('RGBA')
 
+    # TODO: start from index 1 only if background is provided
     for file in final_layers[1:]:
         split_data = str(file)
         if not split_data.endswith('None'):
