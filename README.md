@@ -20,19 +20,23 @@ Includes an extra focus for Fantom marketplaces e.g. PaintSwap. The source is wr
 Inside the `art-engine` directory, create a new folder called assets. Inside of should be
 all of your organised folders of layers to be used to create your images. It should look
 something like this:
-.
-└── art-engine/
+
     └── assets/
+    
         ├── Body/
+        
         │   ├── Alien
         │   ├── Human
         │   ├── Robot
         │   └── Monster
+        
         ├── Beard/
+        
         │   ├── Long Beard
         │   ├── Short Beard
         │   ├── Cool Beard
         │   └── Pink Beard
+        
         └── Eye Accessory/
             ├── Sunglasses
             ├── Eyepatch
