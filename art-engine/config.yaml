@@ -26,12 +26,12 @@ background_color: "pink"
 
 # Set up your layer configuration here.
 layers:
+  - name: Body
+    rarities: [25, 25, 25, 25]
+    required: true
   - name: Beard
     rarities: [10, 6, 5, 10, 6, 4, 40]
     required: false
-  - name: Body
-    rarities: [25, 25, 25, 25]
-    required: true 
   - name: Eyes
     rarities: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
     required: true
