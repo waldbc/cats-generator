@@ -67,4 +67,4 @@ images and metadata will start being created :partying_face:
 5.  Submit a pull request
 
 ## License
-MIT © [actuallyramen](https://github.com/actuallyramen)
+MIT © [felwintrr](https://github.com/felwintrr)
