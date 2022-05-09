@@ -1,16 +1,23 @@
-""" Retroactively replaces the JSON 'baseURI' file after it is known """
+""" Retroactively replaces the JSON Image 'BaseURI' file after it is known """
 
 import json
 
-def update_base_uri():
+from parse_yaml import read_yaml
+
+
+def update_base_uri(config_file: object) -> None:
     """Takes an input of the metadata URI and amount of json files and updates
     all of the json files with the new URI. This is necessary for places like IPFS
     as you cannot get the URI until the images have been uploaded."""
 
-    amount = (int(input('Enter the amount of json files to change\n')))
-    new_uri = input('Copy and paste the image URI\n')
+    amount = config_file['amount']
+    uri_prefix = config_file['uri_prefix']
+    new_uri = config_file['new_uri']
 
-    edition = 1
+    if config_file['id_from_one']:
+        edition = 1
+    else:
+        edition = 0
 
     for _ in range(amount):
 
@@ -24,7 +31,8 @@ def update_base_uri():
             data = json.load(infile)
 
             # Changes the necessary data in the now Python dictionary
-            data['image'] = data['image'].replace('baseURI', new_uri)
+            data['image'] = f'{uri_prefix}{new_uri}/{edition}.png'
+            #data['image'] = data['image'].replace('BaseURI', new_uri)
 
         # Opens the original json file and writes the new data
         with open(json_path, 'w', encoding='utf-8') as outfile:
@@ -35,4 +43,5 @@ def update_base_uri():
     print('Base URIs Updated')
 
 
-update_base_uri()
+read_config = read_yaml()
+update_base_uri(read_config)
