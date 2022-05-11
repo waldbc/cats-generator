@@ -6,7 +6,10 @@ from parse_yaml import read_yaml
 
 
 def create_counts() -> dict:
-
+    """ Loops through all of the json metadata files, creates a frequency tabble
+    with counts of all trait values, and returns it.
+    """
+    
     attributes_count = dict()
     config_file = read_yaml()
 
