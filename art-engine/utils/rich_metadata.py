@@ -9,7 +9,7 @@ def create_counts() -> dict:
     """ Loops through all of the json metadata files, creates a frequency tabble
     with counts of all trait values, and returns it.
     """
-    
+
     attributes_count = dict()
     config_file = read_yaml()
 
@@ -42,12 +42,15 @@ def create_counts() -> dict:
 
 
 def calculate_percentages() -> dict:
-
+    """ Based on the calculated counts, creates a frequency table this time with the 
+    percentage a trait occurs - rounded to three decimal places. 
+    """
     config_file = read_yaml()
     amount = config_file['amount']
     attributes_count = create_counts()
     attribute_percentages = dict()
 
+    # lambda func to calculate percentage
     def percent(count): return (count / amount) * 100
 
     for attribute in attributes_count:
