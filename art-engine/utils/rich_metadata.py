@@ -1,3 +1,5 @@
+""" Adds a trait count and frequency % to the metadata of each token. """
+
 import json
 
 from parse_yaml import read_yaml
