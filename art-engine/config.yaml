@@ -13,7 +13,10 @@ uri_prefix: ipfs://
 # replace this with your image URI once uploaded to IPFS/Arweave
 new_uri: BaseURI
 
-# TODO: Add PaintSwap rich-metadata support
+# Adds count and frequency % to metadata files
+rich_metadata: false
+
+# TODO: Add PaintSwap  rarity rank support
 # set this to true if you want extra metadata/rarity scores for paintswap
 # paintswap_metadata: false
 
