@@ -63,7 +63,9 @@ def calculate_percentages() -> dict:
 
 
 def update_metadata(attribute_count: dict, attribute_freq: dict) -> None:
-
+    """ Reads in the calculated count and frequency, loops through each token, and adds
+    count and value to their respective trait values.
+    """
     config_file = read_yaml()
     amount = config_file['amount']
 
@@ -92,7 +94,6 @@ def update_metadata(attribute_count: dict, attribute_freq: dict) -> None:
 
         data['attributes'] = token_attributes
 
-        # Opens the original json file and writes the new data
         with open(json_path, 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile, indent=2)
 
