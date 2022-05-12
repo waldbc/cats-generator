@@ -1,19 +1,8 @@
 import json
 
-from parse_yaml import read_yaml
 
-
-def calculate_mean():
-
-    config_file = read_yaml()
-    amount = config_file['amount']
-
+def calculate_mean(amount: int, edition: int) -> dict:
     harmonic_means = dict()
-
-    if config_file['id_from_one']:
-        edition = 1
-    else:
-        edition = 0
 
     for _ in range(amount):
 
@@ -49,9 +38,7 @@ def calculate_mean():
 
 
 def add_rarity_rank(harmonic_means: dict) -> None:
-
     sorted_tokens = sorted(harmonic_means.items(), key=lambda x: x[1])
-    print(sorted_tokens)
 
     rank = 1
     for token in sorted_tokens:
@@ -67,7 +54,3 @@ def add_rarity_rank(harmonic_means: dict) -> None:
             json.dump(data, outfile, indent=2)
 
         rank += 1
-
-
-harmonic_means = calculate_mean()
-add_rarity_rank(harmonic_means)
