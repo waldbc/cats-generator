@@ -6,6 +6,9 @@ from PIL import Image
 
 from utils.parse_yaml import read_yaml
 
+import utils.rich_metadata as rm
+import utils.rarity_rank as rr
+
 
 def make_dirs() -> None:
     """Creates the directories to store creates images and their corresponding json data.
@@ -137,3 +140,26 @@ def run() -> None:
             edition += 1
         else:
             print(f'Token #{edition} already exists, re-creating token')
+
+    amount = config_file['amount']
+
+    if config_file['rich_metadata']:
+
+        if config_file['id_from_one']:
+            edition = 1
+            desired_amount = config_file['amount'] + 1
+        else:
+            edition = 0
+            desired_amount = config_file['amount']
+
+        counts = rm.create_counts(edition, amount)
+        percentages = rm.calculate_percentages(amount, counts)
+        rm.update_metadata(edition, amount, counts, percentages)
+
+    if config_file['paintswap_metadata']:
+        try:
+            harmonic_means = rr.calculate_mean(amount, edition)
+            rr.add_rarity_rank(harmonic_means)
+        except FileNotFoundError:
+            print("Cannot use paintswap metadata without rich_metadata!\n" 
+            + "Please set it to true in the config file.")
