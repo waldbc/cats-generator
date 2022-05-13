@@ -32,7 +32,6 @@ def update_base_uri(config_file: object) -> None:
 
             # Changes the necessary data in the now Python dictionary
             data['image'] = f'{uri_prefix}{new_uri}/{edition}.png'
-            #data['image'] = data['image'].replace('BaseURI', new_uri)
 
         # Opens the original json file and writes the new data
         with open(json_path, 'w', encoding='utf-8') as outfile:
