@@ -14,11 +14,11 @@ uri_prefix: ipfs://
 new_uri: BaseURI
 
 # Adds count and frequency % to metadata files
-rich_metadata: false
+rich_metadata: true
 
-# TODO: Add PaintSwap  rarity rank support
 # set this to true if you want extra metadata/rarity scores for paintswap
-# paintswap_metadata: false
+# **IMPORTANT** This requires rich metadata to be set to true in order to function.
+paintswap_metadata: true
 
 # set this to true if aren't providing background layers, and set 
 # a color you would like to use
