@@ -1,24 +1,12 @@
 """ Adds a trait count and frequency % to the metadata of each token. """
 
 import json
-
-from parse_yaml import read_yaml
-
-
-def create_counts() -> dict:
     """ Loops through all of the json metadata files, creates a frequency tabble
     with counts of all trait values, and returns it.
     """
 
+def create_counts(edition: int, amount: int) -> dict:
     attributes_count = dict()
-    config_file = read_yaml()
-
-    amount = config_file['amount']
-
-    if config_file['id_from_one']:
-        edition = 1
-    else:
-        edition = 0
 
     for _ in range(amount):
 
@@ -41,7 +29,8 @@ def create_counts() -> dict:
     return attributes_count
 
 
-def calculate_percentages() -> dict:
+
+def calculate_percentages(amount: int, attributes_count: dict) -> dict:
     """ Based on the calculated counts, creates a frequency table this time with the 
     percentage a trait occurs - rounded to three decimal places. 
     """
@@ -62,7 +51,7 @@ def calculate_percentages() -> dict:
     return attribute_percentages
 
 
-def update_metadata(attribute_count: dict, attribute_freq: dict) -> None:
+def update_metadata(edition: int, amount: int, attribute_count: dict, attribute_freq: dict) -> None:
     """ Reads in the calculated count and frequency, loops through each token, and adds
     count and value to their respective trait values.
     """
@@ -98,6 +87,3 @@ def update_metadata(attribute_count: dict, attribute_freq: dict) -> None:
             json.dump(data, outfile, indent=2)
 
         edition += 1
-
-
-update_metadata(create_counts(), calculate_percentages())
