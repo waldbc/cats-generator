@@ -1,19 +1,8 @@
 import json
 
-from parse_yaml import read_yaml
 
-
-def create_counts() -> dict:
-
+def create_counts(edition: int, amount: int) -> dict:
     attributes_count = dict()
-    config_file = read_yaml()
-
-    amount = config_file['amount']
-
-    if config_file['id_from_one']:
-        edition = 1
-    else:
-        edition = 0
 
     for _ in range(amount):
 
@@ -36,11 +25,7 @@ def create_counts() -> dict:
     return attributes_count
 
 
-def calculate_percentages() -> dict:
-
-    config_file = read_yaml()
-    amount = config_file['amount']
-    attributes_count = create_counts()
+def calculate_percentages(amount: int, attributes_count: dict) -> dict:
     attribute_percentages = dict()
 
     def percent(count): return (count / amount) * 100
@@ -54,15 +39,7 @@ def calculate_percentages() -> dict:
     return attribute_percentages
 
 
-def update_metadata(attribute_count: dict, attribute_freq: dict) -> None:
-
-    config_file = read_yaml()
-    amount = config_file['amount']
-
-    if config_file['id_from_one']:
-        edition = 1
-    else:
-        edition = 0
+def update_metadata(edition: int, amount: int, attribute_count: dict, attribute_freq: dict) -> None:
 
     for _ in range(amount):
 
@@ -89,6 +66,3 @@ def update_metadata(attribute_count: dict, attribute_freq: dict) -> None:
             json.dump(data, outfile, indent=2)
 
         edition += 1
-
-
-update_metadata(create_counts(), calculate_percentages())
