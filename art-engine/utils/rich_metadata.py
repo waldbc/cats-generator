@@ -34,7 +34,6 @@ def calculate_percentages(amount: int, attributes_count: dict) -> dict:
     """ Based on the calculated counts, creates a frequency table this time with the 
     percentage a trait occurs - rounded to three decimal places. 
     """
-    attributes_count = create_counts()
     attribute_percentages = dict()
 
     # lambda func to calculate percentage
