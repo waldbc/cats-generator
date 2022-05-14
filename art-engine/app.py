@@ -108,7 +108,7 @@ def create_image(config_file: object, edition: int, final_layers: tuple) -> None
             img = Image.open(file).convert('RGBA')
             base_image.alpha_composite(img)
 
-    base_image.save(f'build/images/{token_prefix} #{edition}.png')
+    base_image.save(f'build/images/{edition}.png')
 
 
 def run() -> None:
