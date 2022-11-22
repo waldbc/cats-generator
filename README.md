@@ -5,7 +5,7 @@ Python program focused on creating generative NFT collections based on layers of
 ## Project Goals
 
 Making a platform-agnostic generative art program for programmers and non-programmers alike. 
-Includes an extra focus for Fantom marketplaces e.g. PaintSwap. The source is written in **Python** to make it easy and more accesible to contribute to.
+Includes an extra focus for Fantom marketplaces e.g. PaintSwap. The source is written in **Python** to make it easy and more accessible to contribute to.
 
 
 ## Dependencies
