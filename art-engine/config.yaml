@@ -29,13 +29,25 @@ background_color: "pink"
 
 # Set up your layer configuration here.
 layers:
-  - name: Body
-    rarities: [25, 25, 25, 25]
+  - name: Trait4_Eyes
+#    rarities: [25, 25, 25, 25]
     required: true
-  - name: Beard
-    rarities: [10, 6, 5, 10, 6, 4, 40]
+  - name: Trait5_Accessory_mouth
+#    rarities: [25, 25, 25, 25]
+    required: true
+  - name: Trait6_Accessory_face
+#    rarities: [25, 25, 25, 25]
+    required: true
+  - name: Trait7_Uniform
+#    rarities: [25, 25, 25, 25]
+    required: true
+  - name: Trait8_Casual_pants
+#    rarities: [10, 6, 5, 10, 6, 4, 40]
     required: false
-  - name: Eyes
-    rarities: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+  - name: Trait9_Casual_top
+#    rarities: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+    required: true
+  - name: Trait11_Hat
+#    rarities: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
     required: true
 
