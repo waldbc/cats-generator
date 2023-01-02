@@ -36,13 +36,13 @@ def join_layers(config_file: object) -> tuple:
     for layer in config_file['layers']:
 
         layer_path = Path.cwd() / 'art-engine' / 'assets' / layer['name']
-        layers = sorted(
+        layer_assets = sorted(
             [trait for trait in layer_path.iterdir() if trait.is_file()])
 
         if not layer['required']:
-            layers.append('None')
+            layer_assets.append('None')
 
-        chosen_image = random.choices(layers, weights=layer.get('rarities'))
+        chosen_image = random.choices(layer_assets, weights=layer.get('rarities'))
         image_path = layer_path / chosen_image[0]
 
         final_layers.append(image_path)
