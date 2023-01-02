@@ -42,7 +42,7 @@ def join_layers(config_file: object) -> tuple:
         if not layer['required']:
             layers.append('None')
 
-        chosen_image = random.choices(layers, weights=(layer['rarities']))
+        chosen_image = random.choices(layers, weights=layer.get('rarities'))
         image_path = layer_path / chosen_image[0]
 
         final_layers.append(image_path)
