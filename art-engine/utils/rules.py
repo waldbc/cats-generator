@@ -1,116 +1,149 @@
-
-class IgnoreLayer(Exception):
-    pass
+from abc import abstractmethod, ABC
 
 
-def rule0(layer_name: str, final_layers: dict, layer_images: list, rarities: list) -> (list, list):
-    """A dummy rule."""
-    return layer_images, rarities
+class RuleBase(ABC):
+    condition_layer: str
+    target_layers: list[str]
+
+    @classmethod
+    @abstractmethod
+    def ignore_rule_condition(cls, final_layers: dict) -> bool:
+        pass
+
+    @classmethod
+    @abstractmethod
+    def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
+        pass
+
+    @classmethod
+    def apply(cls, layer_name: str, final_layers: dict, layer_images: list, rarities: list) -> (list, list):
+
+        # ignore other layers
+        if layer_name not in cls.target_layers:
+            return layer_images, rarities
+
+        # check for the rule condition
+        if cls.ignore_rule_condition(final_layers):
+            return layer_images, rarities
+
+        filtered_layer_images, filtered_rarities = cls.filter_images(
+            layer_images, rarities
+        )
+
+        return filtered_layer_images, filtered_rarities
 
 
-def rule1(layer_name: str, final_layers: dict, layer_images: list, rarities: list) -> (list, list):
+class Rule0(RuleBase):
+    condition_layer: str = "Trait1_Background"
+    target_layers: list[str] = ["Trait11_Hat"]
+
+    @classmethod
+    def ignore_rule_condition(cls, final_layers: dict) -> bool:
+        # never ignore
+        return False
+
+    @classmethod
+    def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
+        # noop
+        return layer_images, rarities
+
+
+class Rule1(RuleBase):
     """1. Якщо Uniform не none – використовувати у слоях Casual top, Casual pants та Hat тільки none."""
-    condition_layer = "Trait7_Uniform"
-    target_layers = ["Trait8_Casual_pants", "Trait9_Casual_top", "Trait11_Hat"]
 
-    if layer_name not in target_layers:
-        return layer_images, rarities
+    condition_layer: str = "Trait7_Uniform"
+    target_layers: list[str] = ["Trait8_Casual_pants", "Trait9_Casual_top", "Trait11_Hat"]
 
-    if final_layers[condition_layer] != "None":
-        layer_images = ["None"]
-        rarities = [100] if rarities is not None else None
+    @classmethod
+    def ignore_rule_condition(cls, final_layers: dict) -> bool:
+        return final_layers[cls.condition_layer] == "None"
 
-    return layer_images, rarities
+    @classmethod
+    def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
+        filtered_layer_images = ["None"]
+        filtered_rarities = [100] if rarities is not None else None
+        return filtered_layer_images, filtered_rarities
 
 
-def rule2(layer_name: str, final_layers: dict, layer_images: list, rarities: list) -> (list, list):
+class Rule2(RuleBase):
     """2. Якщо у Eyes не Ukrainian – не використовувати Bounty hunter та Ranger у Uniform."""
-    condition_layer = "Trait4_Eyes"
-    target_layers = ["Trait7_Uniform"]
 
-    if layer_name not in target_layers:
-        return layer_images, rarities
+    condition_layer: str = "Trait4_Eyes"
+    target_layers: list[str] = ["Trait7_Uniform"]
 
-    if final_layers[condition_layer] != "None" and \
-            final_layers[condition_layer].name == "Ukrainian.png":
-        return layer_images, rarities
+    @classmethod
+    def ignore_rule_condition(cls, final_layers: dict) -> bool:
+        return final_layers[cls.condition_layer] != "None" and \
+            final_layers[cls.condition_layer].name == "Ukrainian.png"
 
-    filtered_layer_images = []
-    filtered_rarities = [] if rarities is not None else None
+    @classmethod
+    def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
+        filtered_layer_images = []
+        filtered_rarities = [] if rarities is not None else None
 
-    for index, image in enumerate(layer_images):
-        if image != "None" and image.name in ["Bounty-hunter.png", "Ranger.png"]:
-            continue
+        for index, image in enumerate(layer_images):
+            if image != "None" and image.name in [
+                "Bounty-hunter.png",
+                "Ranger.png"
+            ]:
+                continue
 
-        # keep values
-        filtered_layer_images.append(image)
-        if rarities is not None:
-            filtered_rarities.append(rarities[index])
+            # keep values
+            filtered_layer_images.append(image)
+            if rarities is not None:
+                filtered_rarities.append(rarities[index])
 
-    return filtered_layer_images, filtered_rarities
+        return filtered_layer_images, filtered_rarities
 
 
-def rule3(layer_name: str, final_layers: dict, layer_images: list, rarities: list) -> (list, list):
+class Rule3(RuleBase):
     """3. Якщо Uniform = none, Bounty hunter або Ranger – не використовувати слой Vest."""
-    condition_layer = "Trait7_Uniform"  # OK
-    target_layers = ["Trait10_Vest"]
 
-    if layer_name not in target_layers:
-        return layer_images, rarities
+    condition_layer: str = "Trait7_Uniform"
+    target_layers: list[str] = ["Trait10_Vest"]
 
-    if final_layers[condition_layer] != "None" and \
-            final_layers[condition_layer].name not in ["Bounty-hunter.png", "Ranger.png"]:
-        return layer_images, rarities
+    @classmethod
+    def ignore_rule_condition(cls, final_layers: dict) -> bool:
+        return final_layers[cls.condition_layer] != "None" and \
+            final_layers[cls.condition_layer].name not in [
+                "Bounty-hunter.png",
+                "Ranger.png"
+            ]
 
-    layer_images = ["None"]
-    rarities = [100] if rarities is not None else None
-
-    return layer_images, rarities
-
-
-# class Rule(ABC):
-#     condition_layer: str
-#     target_layers: list[str]
-#
-#     @classmethod
-#     @abstractmethod
-#     def ignore_rule_condition(cls) -> bool:
-#         pass
-#
-#     @classmethod
-#     @abstractmethod
-#     def filter_images(cls) -> (list, list):
-#         pass
-#
-#     @classmethod
-#     def apply(cls, layer_name: str, final_layers: dict, layer_images: list, rarities: list) -> (list, list):
-#
-#         # ignore other layers
-#         if layer_name not in cls.target_layers:
-#             return layer_images, rarities
-#
-#         # check for the rule condition
-#         if cls.ignore_rule_condition():
-#             return layer_images, rarities
-#
-#         filtered_layer_images, filtered_rarities = cls.filter_images()
-#
-#         return filtered_layer_images, filtered_rarities
+    @classmethod
+    def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
+        filtered_layer_images = ["None"]
+        filtered_rarities = [100] if rarities is not None else None
+        return filtered_layer_images, filtered_rarities
 
 
-# def rule4(layer_name: str, final_layers: dict, layer_images: list, rarities: list) -> (list, list):
-#     """4. Якщо Uniform = Bounty hunter або Ranger – не використовувати слої Accessory Mouth та Accessory face."""
-#     condition_layer = "Trait7_Uniform" !!!!!
-#     target_layers = ["Trait5_Accessory_mouth", "Trait6_Accessory_face"]
-#
-#     if layer_name not in target_layers:
-#         return layer_images, rarities
-#
-#     if (final_layers["Trait7_Uniform"] == "None") \
-#             or (final_layers["Trait7_Uniform"].name not in ["Bounty-hunter.png", "Ranger.png"]):
-#         return layer_images, rarities
-#
-#     layer_images = ["None"]
-#     rarities = [100] if rarities is not None else None
-#
-#     return layer_images, rarities
+class Rule4(RuleBase):
+    """4. Якщо Accessory Mouth та Accessory face не none - не використовувати Bounty hunter та Ranger у Uniform."""
+
+    condition_layer: str = "Trait5_Accessory_mouth"
+    condition_layer2: str = "Trait6_Accessory_face"
+    target_layers: list[str] = ["Trait7_Uniform"]
+
+    @classmethod
+    def ignore_rule_condition(cls, final_layers: dict) -> bool:
+        return final_layers[cls.condition_layer] == "None" \
+            or final_layers[cls.condition_layer2] == "None"
+
+    @classmethod
+    def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
+        filtered_layer_images = []
+        filtered_rarities = [] if rarities is not None else None
+
+        for index, image in enumerate(layer_images):
+            if image != "None" and image.name in [
+                "Bounty-hunter.png",
+                "Ranger.png"
+            ]:
+                continue
+
+            # keep values
+            filtered_layer_images.append(image)
+            if rarities is not None:
+                filtered_rarities.append(rarities[index])
+
+        return filtered_layer_images, filtered_rarities

@@ -5,18 +5,18 @@ from pathlib import Path
 from PIL import Image
 
 from utils.parse_yaml import read_yaml
-from utils.rules import IgnoreLayer, rule0, rule1, rule2, rule3#, rule4
+from utils.rules import Rule0, Rule1, Rule2, Rule3, Rule4
 
 import utils.rich_metadata as rm
 import utils.rarity_rank as rr
 
 
 RULES = [
-    rule0,
-    rule1,
-    rule2,
-    rule3,
-    # rule4
+    Rule0,
+    Rule1,
+    Rule2,
+    Rule3,
+    Rule4
 ]
 
 
@@ -53,16 +53,14 @@ def join_layers(config_file: object) -> tuple:
             layer_images.append('None')
 
         rarities = layer.get('rarities')
-        try:
-            for rule in RULES:
-                layer_images, rarities = rule(
-                    layer['name'],
-                    final_layers,
-                    layer_images,
-                    rarities
-                )
-        except IgnoreLayer:
-            continue
+
+        for rule in RULES:
+            layer_images, rarities = rule.apply(
+                layer['name'],
+                final_layers,
+                layer_images,
+                rarities
+            )
 
         chosen_image = random.choices(layer_images, weights=rarities)
         image_path = layer_path / chosen_image[0]
