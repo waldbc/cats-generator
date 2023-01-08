@@ -5,9 +5,19 @@ from pathlib import Path
 from PIL import Image
 
 from utils.parse_yaml import read_yaml
+from utils.rules import IgnoreLayer, rule0, rule1, rule2, rule3#, rule4
 
 import utils.rich_metadata as rm
 import utils.rarity_rank as rr
+
+
+RULES = [
+    rule0,
+    rule1,
+    rule2,
+    rule3,
+    # rule4
+]
 
 
 def make_dirs() -> None:
@@ -31,23 +41,35 @@ def join_layers(config_file: object) -> tuple:
     folder and chooses a layer from each folder based on the given rarity weights. It 
     then appends all the paths to a list which act as the final layers for the image.
     """
-    final_layers = list()
+    final_layers = dict()
 
     for layer in config_file['layers']:
 
         layer_path = Path.cwd() / 'art-engine' / 'assets' / layer['name']
-        layer_assets = sorted(
+        layer_images = sorted(
             [trait for trait in layer_path.iterdir() if trait.is_file()])
 
         if not layer['required']:
-            layer_assets.append('None')
+            layer_images.append('None')
 
-        chosen_image = random.choices(layer_assets, weights=layer.get('rarities'))
+        rarities = layer.get('rarities')
+        try:
+            for rule in RULES:
+                layer_images, rarities = rule(
+                    layer['name'],
+                    final_layers,
+                    layer_images,
+                    rarities
+                )
+        except IgnoreLayer:
+            continue
+
+        chosen_image = random.choices(layer_images, weights=rarities)
         image_path = layer_path / chosen_image[0]
 
-        final_layers.append(image_path)
+        final_layers[layer['name']] = image_path
 
-    return tuple(final_layers)
+    return tuple(final_layers.values())
 
 
 def create_metadata(config_file: object, edition: int, final_layers: tuple) -> None:
