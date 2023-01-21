@@ -147,3 +147,31 @@ class Rule4(RuleBase):
                 filtered_rarities.append(rarities[index])
 
         return filtered_layer_images, filtered_rarities
+
+
+class Rule5(RuleBase):
+    """5. Якщо Uniform = none - використовувати Casual top, Casual pants та Hat всі слої крім none."""
+
+    condition_layer: str = "Trait7_Uniform"
+    target_layers: list[str] = ["Trait8_Casual_pants", "Trait9_Casual_top", "Trait11_Hat"]
+
+    @classmethod
+    def ignore_rule_condition(cls, final_layers: dict) -> bool:
+        return final_layers[cls.condition_layer] != "None"
+
+    @classmethod
+    def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
+        filtered_layer_images = []
+        filtered_rarities = [] if rarities is not None else None
+
+        for index, image in enumerate(layer_images):
+            # ignore values
+            if image == "None":
+                continue
+
+            # keep values
+            filtered_layer_images.append(image)
+            if rarities is not None:
+                filtered_rarities.append(rarities[index])
+
+        return filtered_layer_images, filtered_rarities
