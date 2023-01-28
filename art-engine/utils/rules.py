@@ -56,7 +56,8 @@ class Rule1(RuleBase):
 
     @classmethod
     def ignore_rule_condition(cls, final_layers: dict) -> bool:
-        return final_layers[cls.condition_layer] == "None"
+
+        return final_layers[cls.condition_layer].name == "None"
 
     @classmethod
     def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
@@ -73,7 +74,7 @@ class Rule2(RuleBase):
 
     @classmethod
     def ignore_rule_condition(cls, final_layers: dict) -> bool:
-        return final_layers[cls.condition_layer] != "None" and \
+        return final_layers[cls.condition_layer].name != "None" and \
             final_layers[cls.condition_layer].name == "Ukrainian.png"
 
     @classmethod
@@ -104,7 +105,7 @@ class Rule3(RuleBase):
 
     @classmethod
     def ignore_rule_condition(cls, final_layers: dict) -> bool:
-        return final_layers[cls.condition_layer] != "None" and \
+        return final_layers[cls.condition_layer].name != "None" and \
             final_layers[cls.condition_layer].name not in [
                 "Bounty-hunter.png",
                 "Ranger.png"
@@ -126,8 +127,8 @@ class Rule4(RuleBase):
 
     @classmethod
     def ignore_rule_condition(cls, final_layers: dict) -> bool:
-        return final_layers[cls.condition_layer] == "None" \
-            or final_layers[cls.condition_layer2] == "None"
+        return final_layers[cls.condition_layer].name == "None" \
+            or final_layers[cls.condition_layer2].name == "None"
 
     @classmethod
     def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
@@ -157,7 +158,7 @@ class Rule5(RuleBase):
 
     @classmethod
     def ignore_rule_condition(cls, final_layers: dict) -> bool:
-        return final_layers[cls.condition_layer] != "None"
+        return final_layers[cls.condition_layer].name != "None"
 
     @classmethod
     def filter_images(cls, layer_images: list, rarities: list) -> (list, list):
