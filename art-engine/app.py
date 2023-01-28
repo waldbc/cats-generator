@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image
 
 from utils.parse_yaml import read_yaml
-from utils.rules import Rule0, Rule1, Rule2, Rule3, Rule4
+from utils.rules import Rule0, Rule1, Rule2, Rule3, Rule4, Rule5
 
 import utils.rich_metadata as rm
 import utils.rarity_rank as rr
@@ -16,7 +16,8 @@ RULES = [
     Rule1,
     Rule2,
     Rule3,
-    Rule4
+    Rule4,
+    Rule5
 ]
 
 
